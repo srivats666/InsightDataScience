@@ -129,7 +129,6 @@ public class Median_Degree {
 			}
 			
 			val.add(n);
-			
 		}
 	}
 	
@@ -197,6 +196,7 @@ public class Median_Degree {
 		}
 	}
 	
+	//o(nlogn) median calculation
 	private void calcMedian()
 	{
 		List<Integer> l = new ArrayList<Integer>();
@@ -222,6 +222,7 @@ public class Median_Degree {
 		}
 	}
 	
+	//o(n) median calculation
 	private void calcMedian2()
 	{
 		int n = map.size();
@@ -295,7 +296,7 @@ public class Median_Degree {
     }
     
 	
-	public void getMedian(String to, String from, String time)
+	public void getMedian(String to, String from, String time) throws Exception
 	{
 		Date timeObj = convertToDate(time);
 		Date prevMinus59 = getMinTimeWindow();
@@ -322,7 +323,7 @@ public class Median_Degree {
 		if(prevTime.before(timeObj))
 			removeOldEntries(timeObj);
 		
-		calcMedian();
+		calcMedian2();
 		
 		if(timeObj.after(prevTime))
 			prevTime = timeObj;
@@ -352,14 +353,25 @@ public class Median_Degree {
 
 			while ((sCurrentLine = br.readLine()) != null) {
 				
-				String[] parts = sCurrentLine.split(",");
-				String created_time = parts[0].split(":")[1] + ":" + parts[0].split(":")[2] + ":" + parts[0].split(":")[3]; 
-			    String target = parts[1].split(":")[1].replaceAll("\"", "");
-			    String actor = parts[2].split(":")[1].replaceAll("\"", "").replaceAll("}", "");
-				created_time = created_time.replaceAll("\"", "").replaceAll(" ", "");
-				m.getMedian(target, actor, created_time);
-				bw.write(String.format("%.2f",m.prevMedian));
-				bw.newLine();
+				try
+				{
+					String[] parts = sCurrentLine.split(",");
+					String created_time = parts[0].split(":")[1] + ":" + parts[0].split(":")[2] + ":" + parts[0].split(":")[3]; 
+				    String target = parts[1].split(":")[1].replaceAll("\"", "").replaceAll(" ", "");
+				    String actor = parts[2].split(":")[1].replaceAll("\"", "").replaceAll("}", "").replaceAll(" ", "");;
+					created_time = created_time.replaceAll("\"", "").replaceAll(" ", "");
+					
+					if("".equals(target) || "".equals(actor))
+						continue;
+					
+					m.getMedian(target, actor, created_time);
+					bw.write(String.format("%.2f",m.prevMedian));
+					bw.newLine();
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
 			}
 			
 			bw.close();
@@ -367,7 +379,5 @@ public class Median_Degree {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		//System.out.println("Median Finished");
 	}
 }
