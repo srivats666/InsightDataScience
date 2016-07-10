@@ -22,6 +22,9 @@ import java.util.TimeZone;
 
 public class Median_Degree {
 
+	/**
+	 *  Node which holds the payment info
+	 */
 	class Node
 	{
 		String target;
@@ -92,9 +95,21 @@ public class Median_Degree {
 	}
 	//Date Utilities
 	
+	/**
+	 *  Degree count map which maps the node to no of degrees
+	 */
 	Map<String, Integer> map;
+	/**
+	 *  Maps the timeStamp to list of nodes
+	 */
 	Map<String, Set<Node>> timeMap;
+	/**
+	 *  Maps the Node to the timeStamp
+	 */
 	Map<Node, String> edgeMap;
+	/**
+	 *  Stores the previous payment timeStamp
+	 */
 	Date prevTime;
 	double prevMedian;
 	final int window = 59;
@@ -108,6 +123,9 @@ public class Median_Degree {
 		edgeMap = new HashMap<Node, String>();
 	}
 	
+	/**
+	 *  Updates an existing edge between 2 users with the latest timeStamp
+	 */
 	private void updateEdgeMap(Node input, String time)
 	{
 		String mapTime = edgeMap.get(input);
@@ -132,6 +150,10 @@ public class Median_Degree {
 		}
 	}
 	
+	/**
+	 *  Adds a new edge between 2 users, 
+	 *  Adds a new entry into timeMap, edgeMap and the degree map 
+	 */
 	private void addEdgeMap(Node input, String time)
 	{
 		Set<Node> val = timeMap.get(time);
@@ -163,6 +185,12 @@ public class Median_Degree {
 		}
 	}
 	
+	/**
+	 *  Iterates through the timeMap(timeStamp -> Node)
+	 *  starting prevTime -60 to either (currTime -60 or prevTime + 1)
+	 *  and deletes all edges between the period and also updates
+	 *  the map (degree map, Node -> Count) 
+	 */
 	private void removeOldEntries(Date currTime)
 	{
 		Date startPeriod = getMinTimeWindow();
@@ -196,7 +224,10 @@ public class Median_Degree {
 		}
 	}
 	
-	//o(nlogn) median calculation
+	/**
+	 *  Sort the map(node to degree count) and 
+	 *  gets the median from the array
+	 */
 	private void calcMedian()
 	{
 		List<Integer> l = new ArrayList<Integer>();
@@ -222,7 +253,12 @@ public class Median_Degree {
 		}
 	}
 	
-	//o(n) median calculation
+	/**
+	 * Gets the median from the map(node to degree count).
+	 * Uses KthSmallest routine to get the median.
+	 * KthSmallest routine is basically selection algorithm
+	 * which quickSelect and partition method
+	 */
 	private void calcMedian2()
 	{
 		int n = map.size();
@@ -241,18 +277,21 @@ public class Median_Degree {
 		{
 			if(n % 2 != 0)
 			{
-				prevMedian = (double)findKthLargest(nums, n/2);
+				prevMedian = (double)findKthSmallest(nums, n/2);
 			}
 			else
 			{
-				int idx1 = findKthLargest(nums, n/2 - 1);
-				int idx = findKthLargest(nums, n/2);
+				int idx1 = findKthSmallest(nums, n/2 - 1);
+				int idx = findKthSmallest(nums, n/2);
 				prevMedian = ((double)idx + idx1)/2;
 			}
 		}
 	}
 	
-	public int findKthLargest(int[] nums, int k) 
+	/**
+	 *  Gets the middle two elements from the array
+	 */
+	public int findKthSmallest(int[] nums, int k) 
 	{
         int lo = 0;
         int hi = nums.length - 1;
@@ -269,6 +308,11 @@ public class Median_Degree {
         return nums[k];
     }
 
+	/**
+	 * Partitions the array around the pivot
+	 * Puts the small elements to the left and bigger elements
+	 * to the right of the pivot
+	 */
     private int partition(int[] a, int lo, int hi) {
 
         int i = lo;
@@ -295,7 +339,26 @@ public class Median_Degree {
         return v < w;
     }
     
-	
+    /**
+	 * Checks if the payment is within the 60 second window,
+	 * if not return. 
+	 * Checks if there already exists a payment between these 
+	 * two users within the window, and updates the timeStamp 
+	 * of that edge with the latest timeStamp.
+	 * If the payment doesn't exist we add a new edge between the
+	 * two users.
+	 * If the input timeStamp is before the the previous payments
+	 * timeStamp, we just return and output the previously calculated
+	 * median.
+	 * If the input timeStamp is after the the previous payments
+	 * timeStamp, we first remove older entries that fall outside the 
+	 * 60 second window, and then recalculate the median.
+	 * Finally we update the prevTime to the current timeStamp if it is
+	 * a later time   
+	 * @param  target user
+	 * @param  actor user
+	 * @param  timestamp
+	 */
 	public void getMedian(String to, String from, String time) throws Exception
 	{
 		Date timeObj = convertToDate(time);
@@ -330,6 +393,14 @@ public class Median_Degree {
 
 	}
 	
+	/**
+	 * Parses the input file and calls getMedian and writes 
+	 * the new median to the output file. 
+	 * It skips the current line if the input parsing fails 
+	 * or the input has any missing parameters.
+	 * @param  name and location of the input file
+	 * @param  name and location of the output file
+	 */
 	public static void main(String[] args)
 	{
 		Median_Degree m = new Median_Degree();
