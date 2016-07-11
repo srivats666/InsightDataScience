@@ -17,8 +17,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
+
 
 public class Median_Degree {
 
@@ -45,13 +47,18 @@ public class Median_Degree {
 		}
 		
 		@Override
+		public int hashCode() {
+			return this.key.hashCode();
+		}
+		
+		@Override
 		public boolean equals(Object obj) {
 			return this.key.equals(((Node)obj).key);
 		}
 		
 		@Override
 		public String toString() {
-			return target + " -actor- " + actor + " " + time;
+			return "{target- " + target + " actor- " + actor + " time- " + time + " key- " + key + " }";
 		}
 	}
 	
@@ -98,21 +105,21 @@ public class Median_Degree {
 	/**
 	 *  Degree count map which maps the node to no of degrees
 	 */
-	Map<String, Integer> map;
+	private Map<String, Integer> map;
 	/**
 	 *  Maps the timeStamp to list of nodes
 	 */
-	Map<String, Set<Node>> timeMap;
+	private Map<String, Set<Node>> timeMap;
 	/**
 	 *  Maps the Node to the timeStamp
 	 */
-	Map<Node, String> edgeMap;
+	private Map<Node, String> edgeMap;
 	/**
 	 *  Stores the previous payment timeStamp
 	 */
-	Date prevTime;
-	double prevMedian;
-	final int window = 59;
+	private Date prevTime;
+	private double prevMedian;
+	private final int window = 59;
 	
 	@SuppressWarnings("deprecation")
 	public Median_Degree()
@@ -121,6 +128,12 @@ public class Median_Degree {
 		map = new HashMap<String, Integer>();
 		timeMap = new HashMap<String, Set<Node>>();
 		edgeMap = new HashMap<Node, String>();
+	}
+	
+	
+	public double getMedian()
+	{
+		return prevMedian;
 	}
 	
 	/**
@@ -237,6 +250,7 @@ public class Median_Degree {
 		}
 		
 		Collections.sort(l);
+		//System.out.println(l);
 		int idx = l.size();
 		
 		if(idx == 0)
@@ -257,7 +271,7 @@ public class Median_Degree {
 	 * Gets the median from the map(node to degree count).
 	 * Uses KthSmallest routine to get the median.
 	 * KthSmallest routine is basically selection algorithm
-	 * which quickSelect and partition method
+	 * which uses quickSelect and partition method
 	 */
 	private void calcMedian2()
 	{
@@ -293,6 +307,7 @@ public class Median_Degree {
 	 */
 	public int findKthSmallest(int[] nums, int k) 
 	{
+		shuffle(nums);
         int lo = 0;
         int hi = nums.length - 1;
         while (lo < hi) {
@@ -308,6 +323,14 @@ public class Median_Degree {
         return nums[k];
     }
 
+	private void shuffle(int a[]) {
+
+        final Random random = new Random();
+        for(int ind = 1; ind < a.length; ind++) {
+            final int r = random.nextInt(ind + 1);
+            exch(a, ind, r);
+        }
+    }
 	/**
 	 * Partitions the array around the pivot
 	 * Puts the small elements to the left and bigger elements
@@ -359,7 +382,7 @@ public class Median_Degree {
 	 * @param  actor user
 	 * @param  timestamp
 	 */
-	public void getMedian(String to, String from, String time) throws Exception
+	public void generateMedian(String to, String from, String time, boolean flag) throws Exception
 	{
 		Date timeObj = convertToDate(time);
 		Date prevMinus59 = getMinTimeWindow();
@@ -386,26 +409,19 @@ public class Median_Degree {
 		if(prevTime.before(timeObj))
 			removeOldEntries(timeObj);
 		
-		calcMedian2();
+		if(flag)
+			calcMedian2();
+		else
+			calcMedian();
 		
 		if(timeObj.after(prevTime))
 			prevTime = timeObj;
 
 	}
 	
-	/**
-	 * Parses the input file and calls getMedian and writes 
-	 * the new median to the output file. 
-	 * It skips the current line if the input parsing fails 
-	 * or the input has any missing parameters.
-	 * @param  name and location of the input file
-	 * @param  name and location of the output file
-	 */
-	public static void main(String[] args)
+	public void parseInput(String input, String output, boolean flag)
 	{
-		Median_Degree m = new Median_Degree();
-
-		File file = new File(args[1]);
+		File file = new File(output);
 		if (!file.exists()) 
 		{
 		    try 
@@ -416,7 +432,7 @@ public class Median_Degree {
 			}
 		}
 
-		try (BufferedReader br = new BufferedReader(new FileReader(args[0])))
+		try (BufferedReader br = new BufferedReader(new FileReader(input)))
 		{
 			String sCurrentLine;
 			FileWriter fw = new FileWriter(file);
@@ -435,8 +451,8 @@ public class Median_Degree {
 					if("".equals(target) || "".equals(actor))
 						continue;
 					
-					m.getMedian(target, actor, created_time);
-					bw.write(String.format("%.2f",m.prevMedian));
+					generateMedian(target, actor, created_time, flag);
+					bw.write(String.format("%.2f",getMedian()));
 					bw.newLine();
 				}
 				catch(Exception ex)
@@ -450,5 +466,20 @@ public class Median_Degree {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+	}
+	
+	/**
+	 * Parses the input file and calls getMedian and writes 
+	 * the new median to the output file. 
+	 * It skips the current line if the input parsing fails 
+	 * or the input has any missing parameters.
+	 * @param  name and location of the input file
+	 * @param  name and location of the output file
+	 */
+	public static void main(String[] args)
+	{
+		Median_Degree m = new Median_Degree();
+		m.parseInput(args[0], args[1], true);
 	}
 }
