@@ -19,6 +19,28 @@ public class Median_Degree_Tests {
 		}
 	}
 	
+	
+	private List<Info> randomTestData()
+	{
+		List<Info> list = new ArrayList<Info>();
+		String timeStamp = "2016-04-07T03:33:19Z";
+		
+	    for(int i=1; i<=200; i++)
+	    {
+	    	for(int k =1; k<=10; k++)
+	    	{
+	    		double rd = (Math.random() * 200) + 1;
+	    		if(rd == i)
+	    			continue;
+	    		
+	    		Info info = new Info("T" + i, "T" + rd , timeStamp);
+	    		list.add(info);
+	    	}
+	    }
+		
+	    return list;
+	}
+	
 	private List<Info> baseTestData()
 	{
 		List<Info> list = new ArrayList<Info>();
@@ -243,29 +265,41 @@ public class Median_Degree_Tests {
 		long startTime = System.currentTimeMillis();
 		Median_Degree m = new Median_Degree();
 		 
-		m.parseInput("../venmo_input//test-all-venmo-trans/venmo-trans.txt" , "../venmo_output/outputT1.txt", false);
+		m.parseInput("/venmo_input/test-all-venmo-trans/venmo_input/venmo-trans.txt" , "/venmo_output/outputT1.txt", false);
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println(totalTime);
 		
 		startTime = System.currentTimeMillis();
 		Median_Degree m1 = new Median_Degree();
-		m1.parseInput("../venmo_input/test-pt1-venmo-trans/venmo-trans.txt" , "../venmo_output/outputT11.txt", false);
+		m1.parseInput("/venmo_input/test-pt1-venmo-trans/venmo_input/venmo-trans.txt" , "/venmo_output/outputT11.txt", false);
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		System.out.println(totalTime);
 		
 		startTime = System.currentTimeMillis();
 		Median_Degree m2 = new Median_Degree();
-		m2.parseInput("../venmo_input/test-pt2-venmo-trans/venmo-trans.txt" , "../venmo_output/outputT12.txt", false);
+		m2.parseInput("/venmo_input/test-pt2-venmo-trans/venmo_input/venmo-trans.txt" , "/venmo_output/outputT12.txt", false);
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		System.out.println(totalTime);
 		
 		startTime = System.currentTimeMillis();
 		Median_Degree m3 = new Median_Degree();
-		m3.parseInput("../venmo_input/test-pt3-venmo-trans/venmo-trans.txt" , "../venmo_output/outputT13.txt", false);
+		m3.parseInput("/venmo_input/test-pt3-venmo-trans/venmo_input/venmo-trans.txt" , "/venmo_output/outputT13.txt", false);
 		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+		System.out.println(totalTime);
+		
+		startTime = System.currentTimeMillis();
+		Median_Degree m4 = new Median_Degree();
+	    List<Info> l = randomTestData();
+	    
+	    for(int i=0; i<l.size(); i++)
+	    {
+	    	m4.generateMedian(l.get(i).target, l.get(i).actor, l.get(i).timeStamp, false);
+	    }
+	    endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		System.out.println(totalTime);
 		
@@ -277,29 +311,41 @@ public class Median_Degree_Tests {
 	{
 		long startTime = System.currentTimeMillis();
 		Median_Degree m = new Median_Degree();
-		m.parseInput("../venmo_input/test-all-venmo-trans/venmo-trans.txt" , "../venmo_output/outputT2.txt", true);
+		m.parseInput("/venmo_input/test-all-venmo-trans/venmo_input/venmo-trans.txt" , "/venmo_output/outputT2.txt", true);
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println(totalTime);
 		
 		startTime = System.currentTimeMillis();
 		Median_Degree m1 = new Median_Degree();
-		m1.parseInput("../venmo_input/test-pt1-venmo-trans/venmo-trans.txt" , "../venmo_output//outputT21.txt", true);
+		m1.parseInput("/venmo_input/test-pt1-venmo-trans/venmo_input/venmo-trans.txt" , "/venmo_output/outputT21.txt", true);
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		System.out.println(totalTime);
 		
 		startTime = System.currentTimeMillis();
 		Median_Degree m2 = new Median_Degree();
-		m2.parseInput("../venmo_input/test-pt2-venmo-trans/venmo-trans.txt" , "../venmo_output/outputT22.txt", true);
+		m2.parseInput("/venmo_input/test-pt2-venmo-trans/venmo_input/venmo-trans.txt" , "/venmo_output/outputT22.txt", true);
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
-		System.out.println(totalTime);//227
+		System.out.println(totalTime);
 		
 		startTime = System.currentTimeMillis();
 		Median_Degree m3 = new Median_Degree();
-		m3.parseInput("../venmo_input/test-pt3-venmo-trans/venmo-trans.txt" , "../venmo_output/outputT23.txt", true);
+		m3.parseInput("/venmo_input/test-pt3-venmo-trans/venmo_input/venmo-trans.txt" , "/venmo_output/outputT23.txt", true);
 		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+		System.out.println(totalTime);
+		
+		startTime = System.currentTimeMillis();
+		Median_Degree m4 = new Median_Degree();
+	    List<Info> l = randomTestData();
+	    
+	    for(int i=0; i<l.size(); i++)
+	    {
+	    	m4.generateMedian(l.get(i).target, l.get(i).actor, l.get(i).timeStamp, true);
+	    }
+	    endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		System.out.println(totalTime);
 		
