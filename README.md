@@ -14,6 +14,14 @@ The generateMedian method follows the below sequence to calculate the median.
 # Median calculation
 Brute force method sorts the map values by the degree count and gets the median which has a time complexity of o(nlogn).
 Efficient calcMedian2 method uses Quick select algorithm to get median in o(n) time
+
+# Running the Program
+Sample test inputs and outputs have been include in tests and venmo_input,venmo_output folders.
+Follow steps below to execute the program
+
+cd insight_testsuite/
+
+./run_tests.sh
 	
 # Unit tests 
 Created using Junit and can be run following the steps below.
