@@ -34,7 +34,7 @@ javac -cp ".;../lib/junit.jar;../lib/org.hamcrest.core_1.3.0.v201303031735.jar" 
 
 java -cp ".;../lib/junit.jar;../lib/org.hamcrest.core_1.3.0.v201303031735.jar" org.junit.runner.JUnitCore Median_Degree_Tests
 
-# Performance graph between Sort and Quick select taken from unit tests
+# Graph between Sort and Quick select taken from unit tests
 For 100 and 200 users with 10 to 50 payments per user within same window.
 
 <img src='https://github.com/srivats666/Payment/blob/master/images/100.png' title='100 user graph' width='' alt='100 user graph' />
