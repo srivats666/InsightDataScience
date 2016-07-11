@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -419,6 +417,14 @@ public class Median_Degree {
 
 	}
 	
+	/**
+	 * Parses the input file and calls getMedian and writes 
+	 * the new median to the output file. 
+	 * It skips the current line if the input parsing fails 
+	 * or the input has any missing parameters.
+	 * @param  name and location of the input file
+	 * @param  name and location of the output file
+	 */
 	public void parseInput(String input, String output, boolean flag)
 	{
 		File file = new File(output);
@@ -469,14 +475,6 @@ public class Median_Degree {
 
 	}
 	
-	/**
-	 * Parses the input file and calls getMedian and writes 
-	 * the new median to the output file. 
-	 * It skips the current line if the input parsing fails 
-	 * or the input has any missing parameters.
-	 * @param  name and location of the input file
-	 * @param  name and location of the output file
-	 */
 	public static void main(String[] args)
 	{
 		Median_Degree m = new Median_Degree();
