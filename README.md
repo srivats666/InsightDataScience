@@ -43,7 +43,7 @@ Inputs:
 For the performance evaluation of calculating median, first I created 10 different inputs splitted into 2 groups.
 First set of inputs is where there are 100 different users and each user makes k payments where k is in set k=[10,20,30,40,50]. 
 These k payments are made to random k target users selected from the set of 100 users.
-Second set is where there are 200 different users and each user again make k payments to random k target users. All the payments have made within the same 60 seconds window. 
+Second set is where there are 200 different users and each user again make k payments to random k target users. All the payments have been made within the same 60 seconds window. 
 This way, the performance of calculating median can be evaluated under a heavy load.
 
 Algorithms:
