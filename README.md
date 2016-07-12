@@ -13,7 +13,7 @@ The generateMedian method follows the below sequence to calculate the median.
 	
 # Median calculation
 
-In my implementation I used QuickSelect algorithm to efficiently calculate the median after each time a new payment is made. QuickSelect algorithm finds the middle element by partitioning the array around a pivot and by only recursing on one side of the sub problem. The time complexity for this approach is O(n).
+In my implementation I used QuickSelect algorithm to efficiently calculate the median after each time a new payment is made. QuickSelect algorithm finds the middle element by partitioning the array around a pivot and by recursing only on one side of the sub problem. The time complexity for this approach is O(n).
 
 I also implemented the brute-force approach for performance comparison shown at the bottom of this page. The brute-force approach simply sorts the array and returns the middle element, hence has a time complexity of O(n log n).
 
