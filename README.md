@@ -7,13 +7,15 @@ We use timeMap to map the Node(payment) to its timeStamp and edgeMap to map the 
 The generateMedian method follows the below sequence to calculate the median.
 * If the payment is before the 60 second window print the previously calculated median.
 * If there already exists a payment between these two users, update the timeMap and the edgeMap with the latest timeStamp. 
-* Otherwise add a new Node between these users and add them to the timeMap and the edgeMap. Also add/update the map object with the      degree.
+* Otherwise add a new Node between these users and add them to the timeMap and the edgeMap. Also add/update the map object with the degree.
 * If the payment is within the window for existing users then return the previously calculated median. Or calculate the new median. 
 * Remove old entries if the payment is after the previous payment time.
 	
 # Median calculation
-Brute force method sorts the map values by the degree count and gets the median which has a time complexity of o(nlogn).
-Efficient calcMedian2 method uses Quick select algorithm to get median in o(n) time
+
+In my implementation I used QuickSelect algorithm to efficiently calculate the median after each time a new payment is made. QuickSelect algorithm finds the middle element by partitioning the array around a pivot and by only recursing on one side of the sub problem. The time complexity for this approach is O(n).
+
+I also implemented the brute-force approach for performance comparison shown at the bottom of this page. The brute-force approach simply sorts the array and returns the middle element, hence has a time complexity of O(n log n).
 
 # Running the Program
 Sample test inputs and outputs have been included in tests, venmo_input and venmo_output folders.
@@ -38,8 +40,8 @@ java -cp ".;../lib/junit.jar;../lib/org.hamcrest.core_1.3.0.v201303031735.jar" o
 
 Inputs:
 
-For the performance evaluation of calculating median, I used the unit test module. First I created 10 different inputs splitted into 2 groups.
-First set of inputs is where there are 100 different users and each user makes k payments where k is in set k'=[10,20,30,40,50]. 
+For the performance evaluation of calculating median, first I created 10 different inputs splitted into 2 groups.
+First set of inputs is where there are 100 different users and each user makes k payments where k is in set k=[10,20,30,40,50]. 
 These k payments are made to random k target users selected from the set of 100 users.
 Second set is where there are 200 different users and each user again make k payments to random k target users. All the payments have made within the same 60 seconds window. 
 This way, the performance of calculating median can be evaluated under a heavy load.
